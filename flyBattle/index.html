@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>飞机大战</title>
+</head>
+<style>
+        *{margin: 0; padding: 0}
+        .battleground {position: absolute;top:50%;left: 50%;width: 504px;height: 808px;margin: -404px 0 0 -252px;background: #000;}
+        .score_span {position: absolute;font-size: 12px;color: #FFF;width: 100%; background: #CCC}
+        .score_span .score {font-size: 16px;color: red;font-weight: bold;}
+        .startBtn {position: absolute;top:50%;left: 50%; width: 0;height: 0;border: 50px solid transparent;border-left: 50px solid springgreen;margin-left: -25px;margin-top: -25px}
+        .startBtn:hover{cursor: pointer;}
+        .ownfly {position: absolute;width: 18px;height: 18px;background: url('./img/flyer.png') no-repeat}
+        .bullet {position: absolute;width: 5px;height: 15px;background: url('./img/bullet.png') no-repeat}
+        .enemy {position: absolute;width: 18px;height: 18px;background: url('./img/enemy.png') no-repeat}
+        .over{position: absolute;top:50%;left: 50%;width: 200px;height: 100px;margin: -50px 0 0 -100px;background: #CCC;line-height: 100px;font-weight: bold;font-size: 24px;text-align: center;display: none;z-index: 15}
+</style>
+<body>
+        <div id="battleground" class='battleground'>
+                <div class="score_span">
+                        你的得分是&nbsp;--<span class='score' id="score">0</span>--&nbsp;分
+                </div>
+                <div class="startBtn" id='startBtn'></div>
+                <div id="over" class="over">GAME OVER</div>
+        </div>
+</body>
+<script src="./js/Bullet.js"></script>
+<script src="./js/Enemy.js"></script>
+<script src="./js/ownfly.js"></script>
+<script src="./js/game.js"></script>
+<script src="./js/local.js"></script>
+</html>
