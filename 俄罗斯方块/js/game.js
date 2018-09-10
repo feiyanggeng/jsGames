@@ -15,9 +15,9 @@ class Game {
                 this.gamedivs = [];     //游戏主模块的div对象
                 //初始化定义  游戏版面的数组  是10*20的矩阵
                 this.gameData = [
-                        [0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
-                        [0, 0, 0, 0, 2, 0, 0, 0, 0, 0],
-                        [0, 0, 0, 0, 2, 2, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -58,6 +58,16 @@ class Game {
                         divs.push(div)
                 }
         }
+        /**
+         * 将nextData中的值赋值给gamedata中
+         */
+        setData(){
+                for (let i = 0; i< this.nextData.length; i++) {
+                      for (let j = 0; j < this.nextData[i].length; j++) {
+                        this.gameData[i][j+3] = this.nextData[i][j]                              
+                      }
+                }
+        }
      
         /**
          * 刷新dom样式,根据dom数据对应的数据改变dom的样式
@@ -85,6 +95,7 @@ class Game {
                 this.initDiv(doms.gamediv, this.gameData, this.gamedivs)
                 this.initDiv(doms.nextdiv, this.nextData, this.nextdivs)
                 this.refreshDivs(this.nextdivs,this.nextData)
+                this.setData()
                 this.refreshDivs(this.gamedivs,this.gameData)
         }
 }
