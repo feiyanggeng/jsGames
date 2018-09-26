@@ -5,12 +5,7 @@
 class Game {
         constructor() {
                 this.game = "",
-                this.nextData = [
-                        [0,2,0,0],
-                        [0,2,0,0],
-                        [0,2,0,0],
-                        [0,2,0,0]
-                ]
+                this.nextData = []
                 this.nextdivs = [];     //保存下一个模块中每一个 div的dom对象  用于以后对dom的操作
                 this.gamedivs = [];     //游戏主模块的div对象
                 //初始化定义  游戏版面的数组  是10*20的矩阵
@@ -88,7 +83,7 @@ class Game {
                 }
         }
         /**
-         * 
+         * 初始化游戏界面
          * @param doms dom对象的集合
          */
         init(doms) {
