@@ -1,6 +1,6 @@
 class Square5 extends Square{
         constructor(){
-                super(this)
+                super()
                 this.rotates = [
                     [
                         [0, 0, 0, 0],

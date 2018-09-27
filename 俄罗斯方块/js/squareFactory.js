@@ -7,7 +7,6 @@ class SquareFactory {
          */
         make (index, dir) {
                 let s
-                index++
                 switch(index) {
                         case 1 :
                                 s = new Square1()

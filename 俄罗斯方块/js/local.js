@@ -7,9 +7,16 @@ class Local {
                 this.game = new Game()          //实例化game对象
                 this.doms = {}                  //保存交互要用到的dom
         }
+        makeSquareType () {
+                return Math.ceil(Math.random()*7)
+        }
+        makeTypeModel () {
+                return Math.floor(Math.random()*4)
+        }
         start(){
                 this.doms.gamediv = document.getElementById('game')
                 this.doms.nextdiv = document.getElementById('next')
-                this.game.init(this.doms)
+                this.game.init(this.doms, this.makeSquareType(), this.makeTypeModel())
+                this.game.forwardNext(this.makeSquareType(), this.makeTypeModel())
         }
  }
