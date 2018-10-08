@@ -60,9 +60,23 @@ class Game {
         setData () {
                 for (let i = 0; i< this.cur.data.length; i++) {
                       for (let j = 0; j < this.cur.data[i].length; j++) {
-                        this.gameData[this.cur.origin.x + i][this.cur.origin.y + j] = this.cur.data[i][j]
+                              if (this.check(this.cur.origin, i, j)) {  
+                                      this.gameData[this.cur.origin.x + i][this.cur.origin.y + j] = this.cur.data[i][j]
+                              }
                       }
                 }
+        }
+        /**
+         * 清除数组中原来为 2 的值
+         */
+        clearData () {
+                for (let i = 0; i< this.cur.data.length; i++) {
+                        for (let j = 0; j < this.cur.data[i].length; j++) {
+                                if (this.check(this.cur.origin, i, j)) {
+                                        this.gameData[this.cur.origin.x + i][this.cur.origin.y + j] = 0
+                                }
+                        }
+                  }
         }
         /**
          * 将下一个方块赋值给当前的方块，并重新生成一个新的方块
@@ -93,6 +107,74 @@ class Game {
                                 }
                         }
                 }
+        }
+        /**
+         * 检验将要赋值的点游戏面板的相应位置是否可以进行赋值操作
+         * @param {*} pos 要赋值的点
+         * @param {*} i   游戏面板的x
+         * @param {*} j  游戏面板的y
+         */
+        check (pos, i, j) {
+                if (pos.x + i < 0) {
+                        return false
+                } else if (pos.x + i >= this.gameData.length) {
+                        return false
+                } else if (pos.y + j <= 0) {
+                        return false
+                } else if (pos.y + j >= this.gameData[0].length) {
+                        return false
+                } else if (this.gameData[pos.x + i][pos.y + j] === 1) {
+                        return false
+                } else {
+                        return true
+                }
+        }
+        /**
+         * 检验非0 data的下一个点pos是否合法
+         * @param {*} pos 
+         * @param {*} data 
+         */
+        isValid (pos, data) {
+                for (let i = 0; i < data.length; i++) {
+                        for (let j = 0; j < data[0].length; j++) {
+                                if (data[i][j] != 0) {
+                                        if (!this.check(pos, i, j)) {
+                                                return false
+                                        }
+                                }
+                        }
+                }
+                return true
+        }
+        /**
+         * 方块下落
+         */
+        down () {
+                let test = {...this.cur.origin}
+                test.x += 1
+                if(this.isValid(test, this.cur.data)) {
+                        this.clearData()
+                        this.cur.down()
+                        this.setData()
+                        this.refreshDivs(this.gamedivs, this.gameData)
+                        return false
+                } else {
+                        return true
+                }
+        }
+        /**
+         * 固定方块
+         */
+        fixed () {
+                for (let i = 0; i< this.cur.data.length; i++) {
+                        for (let j = 0; j < this.cur.data[i].length; j++) {
+                                if (this.check(this.cur.origin, i, j)) {
+                                        if (this.cur.data[i][j] === 2) {
+                                                this.gameData[this.cur.origin.x + i][this.cur.origin.y + j] = 1
+                                        }
+                                }
+                        }
+                  }
         }
         /**
          * 初始化游戏界面

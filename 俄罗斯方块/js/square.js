@@ -14,6 +14,12 @@ class Square{
                 }
         }
         /**
+         * 方块下落
+         */
+        down () {
+                this.origin.x = this.origin.x + 1
+        }
+        /**
          * 将工程里产生的方块赋值到data面板中
          * @param {*} dir 方块样式的索引
          */
