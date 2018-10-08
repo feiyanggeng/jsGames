@@ -176,7 +176,7 @@ class Game {
          * 方块下落
          */
         down () {
-                let test = {...this.cur.origin}
+                let test = {...this.cur.origin}               //存储当前点的下面一个点的位置信息
                 test.x += 1
                 if(this.isValid(test, this.cur.data)) {
                         this.clearData()
@@ -192,7 +192,7 @@ class Game {
          * 方块右移
          */
         right () {
-                let test = {...this.cur.origin}
+                let test = {...this.cur.origin}         //存储当前点的右边一个点的位置信息
                 test.y += 1
                 if(this.isValid(test, this.cur.data)) {
                         this.clearData()
@@ -205,7 +205,7 @@ class Game {
          * 方块左移
          */
         left () {
-                let test = {...this.cur.origin}
+                let test = {...this.cur.origin}         //存储当前点的左边一个点的位置信息
                 test.y -= 1
                 if(this.isValid(test, this.cur.data)) {
                         this.clearData()

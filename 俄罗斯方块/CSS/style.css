@@ -9,18 +9,6 @@
         top: 10px;
         left: 10px;
     }
-    .gameOver {
-        text-align:center;
-        width: 100px;
-        height: 70px;
-        background-color: #F2FAFF;
-        position: absolute;
-        top: 150px;
-        left: 60px;
-        display: none;
-        float: left;
-        border: 1px solid blue;
-    }
     .refreshGame{
         margin-top: 5px;
     }
@@ -61,8 +49,39 @@
         left: 260px;
         font-size: 14px
     }
+    .sore-wrap div {
+        margin-top: 5px;
+    }
     .sore {
         font-size: 20px;
         font-weight: 600;
+        color: #409eff
+    }
+    .game .game-over {
+        position: absolute;
+        display: none;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 998;
+        background: rgba(0, 0, 0, .5);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #F2FAFF;
+        font-style: 24px;
+        font-weight: 600;
+    }
+    .game .game-over .reStart {
+        color: #94cbf3;
+        font-size: 16px;
+        font-weight: 200;
+        cursor: pointer;
+    }
+    .game .game-over .reStart:hover {
+        color: #40eeff
+    }
+    .game .game-over .reStart:active {
         color: #409eff
     }

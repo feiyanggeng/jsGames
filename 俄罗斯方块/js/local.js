@@ -39,14 +39,34 @@ class Local {
                         let line = this.game.clearLine()
                         this.game.setSore(line)
                         if (this.game.gameOver()) {
-                                clearInterval(this.timer)
-                                this.timer = null
+                                this.stop()
                         } else {
                                 this.game.forwardNext(this.makeSquareType(), this.makeTypeModel())
                         }
                 }
         }
+        /**
+         * 设置难度系数
+         */
+        setDifficulty () {
+                let difficulty = document.getElementById('difficulty')
+                difficulty.onchange = e => {
+                        let INTERVAL = this.INTERVAL / e.target.value
+                        clearInterval(this.timer)
+                        this.timer = setInterval(() => {
+                                this.down()
+                        }, INTERVAL)
+                }
+        }
+        /**
+         * 游戏结束 
+         */
+        stop () {
+                clearInterval(this.timer)
+                this.timer = null
+                document.getElementById('gameOver').style.display = 'flex'
 
+        }
         /**
          * 游戏开始 入口函数
          */
@@ -55,13 +75,23 @@ class Local {
                         gamediv: document.getElementById('game'),
                         nextdiv: document.getElementById('next'),
                         soredom: document.getElementById('sore'),
-                        linedom: document.getElementById('line')
+                        linedom: document.getElementById('line'),
                 }
+                this.setDifficulty()
                 this.game.init(this.doms, this.makeSquareType(), this.makeTypeModel())
                 this.bindKeyEvent()
                 this.game.forwardNext(this.makeSquareType(), this.makeTypeModel())
                 this.timer = setInterval(() => {
                         this.down()
                 }, this.INTERVAL)
+                this.reStart()
+        }
+        /**
+         * 重新开始
+         */
+        reStart () {
+                document.getElementById('reStart').onclick = () => {
+                        document.location.reload()
+                }
         }
  }
