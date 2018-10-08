@@ -55,3 +55,14 @@
         background-color: gray;
         border:1px solid black;
     }
+    .sore-wrap {
+        position: absolute;
+        top: 100px;
+        left: 260px;
+        font-size: 14px
+    }
+    .sore {
+        font-size: 20px;
+        font-weight: 600;
+        color: #409eff
+    }

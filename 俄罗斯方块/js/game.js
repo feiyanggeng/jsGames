@@ -5,6 +5,7 @@
 class Game {
         constructor() {
                 this.game = "",
+                this.gameDoms           //游戏页面的dom元素
                 this.curType            //当前方块的类型
                 this.curModel           //当前方块的模型
                 this.factory;           //方块工厂
@@ -252,6 +253,35 @@ class Game {
                 return line
         }
         /**
+         * 设置分数
+         * @param {*} line 消的行数 
+         */
+        setSore (line) {
+                let sore = parseInt(this.gameDoms.soredom.innerHTML)
+                let linenum = parseInt(this.gameDoms.linedom.innerHTML)
+                let goal = 0
+                switch (line) {
+                        case 1 : 
+                                goal = 5
+                                break
+                        case 2 :
+                                goal = 15
+                                break
+                        case 3 : 
+                                goal = 50
+                                break
+                        case 4 : 
+                                goal = 100
+                                break
+                        default:
+                                break
+                }
+                sore += goal
+                linenum += line
+                this.gameDoms.soredom.innerHTML = sore
+                this.gameDoms.linedom.innerHTML = linenum
+        }
+        /**
          * 游戏结束
          */
         gameOver () {
@@ -270,6 +300,7 @@ class Game {
          * @param typeModel  方块四种模式中的一种
          */
         init(doms, squareType, typeModel) {
+                this.gameDoms = doms
                 this.factory = new SquareFactory()
                 this.next = this.factory.make(squareType, typeModel)
                 this.initDiv(doms.gamediv, this.gameData, this.gamedivs)

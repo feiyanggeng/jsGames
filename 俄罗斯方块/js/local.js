@@ -37,6 +37,7 @@ class Local {
                 if (this.game.down()) {
                         this.game.fixed()
                         let line = this.game.clearLine()
+                        this.game.setSore(line)
                         if (this.game.gameOver()) {
                                 clearInterval(this.timer)
                                 this.timer = null
@@ -52,7 +53,9 @@ class Local {
         start () {
                 this.doms = {
                         gamediv: document.getElementById('game'),
-                        nextdiv: document.getElementById('next')
+                        nextdiv: document.getElementById('next'),
+                        soredom: document.getElementById('sore'),
+                        linedom: document.getElementById('line')
                 }
                 this.game.init(this.doms, this.makeSquareType(), this.makeTypeModel())
                 this.bindKeyEvent()

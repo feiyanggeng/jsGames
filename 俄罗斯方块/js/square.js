@@ -34,7 +34,7 @@ class Square{
                 this.origin.y = this.origin.y - 1
         }
         /**
-         * 将工程里产生的方块赋值到data面板中
+         * 设置选择哪一种方块
          * @param {*} dir 方块样式的索引
          */
         rotate (dir) {
