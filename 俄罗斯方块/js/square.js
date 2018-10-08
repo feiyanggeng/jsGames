@@ -7,6 +7,8 @@ class Square{
                         [0, 0, 0, 0],
                         [0, 0, 0, 0]
                 ],
+                //旋转方向
+                this.dir = 0;
                 /**定义方块的位置 */
                 this.origin = {
                         x: 0,
@@ -20,13 +22,27 @@ class Square{
                 this.origin.x = this.origin.x + 1
         }
         /**
+         * 方块右移
+         */
+        right () {
+                this.origin.y = this.origin.y + 1
+        }
+        /**
+         * 方块左移
+         */
+        left () {
+                this.origin.y = this.origin.y - 1
+        }
+        /**
          * 将工程里产生的方块赋值到data面板中
          * @param {*} dir 方块样式的索引
          */
         rotate (dir) {
+                if (!dir) dir = 1
+                this.dir = (this.dir + dir) % 4
                 for (let i = 0; i < this.data.length; i++) {
                         for (let j = 0; j<this.data[i].length; j++) {
-                                this.data[i][j] = this.rotates[dir][i][j]
+                                this.data[i][j] = this.rotates[this.dir][i][j]
                         }
                 }
         }

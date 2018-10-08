@@ -5,6 +5,8 @@
 class Game {
         constructor() {
                 this.game = "",
+                this.curType            //当前方块的类型
+                this.curModel           //当前方块的模型
                 this.factory;           //方块工厂
                 this.next;               //下一个方块的对象
                 this.cur;               //当前方块的对象
@@ -119,7 +121,7 @@ class Game {
                         return false
                 } else if (pos.x + i >= this.gameData.length) {
                         return false
-                } else if (pos.y + j <= 0) {
+                } else if (pos.y + j < 0) {
                         return false
                 } else if (pos.y + j >= this.gameData[0].length) {
                         return false
@@ -147,6 +149,29 @@ class Game {
                 return true
         }
         /**
+         * 方块旋转
+         */
+        rotate () {
+                let dir = (this.cur.dir + 1) % 4
+                let test = [
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0]
+                ]
+                for (let i = 0; i < this.cur.rotates[dir].length; i++) {
+                        for (let j = 0; j < this.cur.rotates[dir][i].length; j++) {
+                                test[i][j] = this.cur.rotates[dir][i][j]
+                        }
+                }
+                if(this.isValid(this.cur.origin, test)) {
+                        this.clearData()
+                        this.cur.rotate()
+                        this.setData()
+                        this.refreshDivs(this.gamedivs, this.gameData)
+                }
+        } 
+        /**
          * 方块下落
          */
         down () {
@@ -163,6 +188,32 @@ class Game {
                 }
         }
         /**
+         * 方块右移
+         */
+        right () {
+                let test = {...this.cur.origin}
+                test.y += 1
+                if(this.isValid(test, this.cur.data)) {
+                        this.clearData()
+                        this.cur.right()
+                        this.setData()
+                        this.refreshDivs(this.gamedivs, this.gameData)
+                }
+        }
+        /**
+         * 方块左移
+         */
+        left () {
+                let test = {...this.cur.origin}
+                test.y -= 1
+                if(this.isValid(test, this.cur.data)) {
+                        this.clearData()
+                        this.cur.left()
+                        this.setData()
+                        this.refreshDivs(this.gamedivs, this.gameData)
+                }
+        }
+        /**
          * 固定方块
          */
         fixed () {
@@ -175,6 +226,42 @@ class Game {
                                 }
                         }
                   }
+        }
+        /**
+         * 清除行
+         */
+        clearLine () {
+                let line = 0
+                for (let i = 0; i < this.gameData.length; i++) {
+                        let istrue = true
+                        for (let j = 0; j < this.gameData[i].length; j++) {
+                                if (this.gameData[i][j] != 1) {
+                                        istrue = false
+                                }
+                        }
+                        if (istrue) {
+                                for (let m = i; m > 0; m--) {
+                                        for (let k = 0; k < this.gameData[i].length; k++) {
+                                                this.gameData[m][k] = this.gameData[m-1][k]     
+                                        }
+                                }
+                               i--
+                               line++
+                        }
+                }
+                return line
+        }
+        /**
+         * 游戏结束
+         */
+        gameOver () {
+                let over = false
+                for (let i = 0; i < this.gameData[0].length; i++) {
+                        if (this.gameData[0][i] == 1) {
+                                over = true
+                        }
+                }
+                return over
         }
         /**
          * 初始化游戏界面

@@ -4,7 +4,7 @@
  */
 class Local {
         constructor(){
-                this.INTERVAL = 250
+                this.INTERVAL = 500
                 this.game = new Game()          //实例化game对象
                 this.doms                  //保存交互要用到的dom
                 this.timer                      //定时器
@@ -15,15 +15,37 @@ class Local {
         makeTypeModel () {
                 return Math.floor(Math.random()*4)
         }
+        bindKeyEvent () {
+                document.addEventListener('keydown', e => {
+                        if (e.keyCode === 38){ //up
+                                this.game.rotate();
+                        }else if(e.keyCode===39){ //right
+                                this.game.right();
+                        }else if(e.keyCode===40){ //down
+                                this.game.down();
+                        }else if(e.keyCode===37){ //left
+                                this.game.left();
+                        }else if(e.keyCode===32){ //space
+                                this.game.fall();
+                        }
+                })
+        }
         /**
          * 方块自己下落
          */
-        move () {
+        down () {
                 if (this.game.down()) {
                         this.game.fixed()
-                        this.game.forwardNext(this.makeSquareType(), this.makeTypeModel())
+                        let line = this.game.clearLine()
+                        if (this.game.gameOver()) {
+                                clearInterval(this.timer)
+                                this.timer = null
+                        } else {
+                                this.game.forwardNext(this.makeSquareType(), this.makeTypeModel())
+                        }
                 }
         }
+
         /**
          * 游戏开始 入口函数
          */
@@ -33,9 +55,10 @@ class Local {
                         nextdiv: document.getElementById('next')
                 }
                 this.game.init(this.doms, this.makeSquareType(), this.makeTypeModel())
+                this.bindKeyEvent()
                 this.game.forwardNext(this.makeSquareType(), this.makeTypeModel())
                 this.timer = setInterval(() => {
-                        this.move()
+                        this.down()
                 }, this.INTERVAL)
         }
  }
