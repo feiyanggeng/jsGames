@@ -8,7 +8,17 @@ image.onload = function() {
         drawChess()
 }
 
-let isme = true                // 判断是自己还是代码
+let isme = true                // 判断是自己还是电脑
+let chess = []                  // 记录棋盘上面的点
+
+// 初始化棋盘数组
+for (let i=0; i < 15; i++) {
+        chess[i] = []
+        for (let j = 0; j < 15; j++) {
+                chess[i][j] = 0
+        }
+}
+
 // 绘制棋盘
 function drawChess() {
        for (let i = 0; i < 15; i++) {
@@ -22,20 +32,23 @@ function drawChess() {
 }
 
 // 绘制棋子
-function drawChessPieces(x, y, me) {
+function drawChessPieces(i, j, me) {
         ctx.beginPath()
-        ctx.arc(x, y, 13, 0, 2*Math.PI)
-        ctx.closePath();
-        let color = ctx.createRadialGradient(x, y, 13, x + 2, y - 2, 2)
+        ctx.arc(15 + i * 30,15 + j * 30, 13, 0, 2*Math.PI)
+        ctx.closePath()
+        let color = ctx.createRadialGradient(15 + i * 30, 15 + j * 30, 13, 17 + i * 30, 13 + j * 30, 2)
         if (me) {
                 color.addColorStop(0, "#0A0A0A")
                 color.addColorStop(1, "#636766")
+                chess[i][j] = 1
         } else {
                 color.addColorStop(0, "#D1D1D1")
                 color.addColorStop(1, "#F9F9F9")
+                chess[i][j] = 2
         }
         ctx.fillStyle = color
         ctx.fill()
+        isme = !isme
 }
 
 // 玩家绘制
@@ -43,13 +56,16 @@ canvas.onclick = function(e) {
         if(!isme) {
                 return
         }
-        let point_x = 15 + (Math.ceil(e.offsetX/30) - 1) * 30
-        let point_y = 15 + (Math.ceil(e.offsetY/30) - 1) * 30
-        drawChessPieces(point_x, point_y, isme)
-        isme = !isme
+        let i = Math.ceil(e.offsetX/30) - 1
+        let j = Math.ceil(e.offsetY/30) - 1
+        if (chess[i][j] !== 0) {
+                return
+        }
+        drawChessPieces(i, j, isme)
+        computerAI()
 }
 
 // 电脑绘制
 computerAI = function () {
-        
+        drawChessPieces(i, j, isme)
 }
