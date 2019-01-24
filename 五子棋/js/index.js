@@ -51,7 +51,7 @@ for (let i = 0; i < 15; i++ ) {
                 for (let k = 0; k < 5; k++) {
                         wins[j+k][i][count] = true
                 }
-        count++
+                count++
         }
 }
 // 初始化 左斜线的所有赢法
@@ -60,19 +60,18 @@ for (let i = 0; i < 11; i++ ) {
                 for (let k = 0; k < 5; k++) {
                         wins[i+k][j+k][count] = true
                 }
-        count++
+                count++
         }
 }
 // 初始化 右斜线的所有赢法
 for (let i = 0; i < 11; i++ ) {
         for (let j = 14; j > 3; j--) {
-                for (let k = 0; k < 4; k++) {
+                for (let k = 0; k < 5; k++) {
                         wins[i+k][j-k][count] = true
                 }
-        count++
+                count++
         }
 }
-
 // 初始化赢法统计数组
 for(let i = 0; i < count; i++) {
         myMins[i] = 0
@@ -100,11 +99,9 @@ function drawChessPieces(i, j, me) {
         if (me) {
                 color.addColorStop(0, "#0A0A0A")
                 color.addColorStop(1, "#636766")
-                chess[i][j] = 1                         // 玩家 落子设置为 1
         } else {
                 color.addColorStop(0, "#D1D1D1")
                 color.addColorStop(1, "#F9F9F9")
-                chess[i][j] = 2                         // 电脑 落子设置为 2
         }
         ctx.fillStyle = color
         ctx.fill()
@@ -118,15 +115,94 @@ canvas.onclick = function(e) {
         }
         let i = Math.ceil(e.offsetX/30) - 1
         let j = Math.ceil(e.offsetY/30) - 1
-        if (chess[i][j] !== 0) {
-                return
+        if (chess[i][j] === 0) {
+                drawChessPieces(i, j, isme)
+                chess[i][j] = 1                         // 玩家 落子设置为 1
+                for (let k = 0; k < count; k++) {
+                        if (wins[i][j][k]) {
+                                myMins[k]++
+                                computer[k] = 6
+                                console.log('我的赢法',myMins[k])
+                                if (myMins[k] === 5) {
+                                        alert('YOU WIN')
+                                        return
+                                } 
+                        }
+                }
         }
-        drawChessPieces(i, j, isme)
-        computerAI()
+        let timer = setTimeout(() => {
+                computerAI()
+                clearTimeout(timer)
+        }, 1000)
 }
 
 // 电脑绘制
 computerAI = function () {
+        // 存储人、机的得分情况  用来比较哪个点更好
+        let myScore = [], computerScore = []
+        // 保存电脑落子的点
+        let u=0, v=0
+        // 保存 最高分
+        let max = 0
+        // 初始化 人、机得分
+        for (let i = 0; i < 15; i++) {
+                myScore[i] = []
+                computerScore[i] = []
+                for (let j = 0; j < 15; j++) {
+                        myScore[i][j] = 0
+                        computerScore[i][j] = 0
+                }
+        }
+        //  遍历场上所有可以落子的点 计算出得分最高的点作为 计算机将要落子的点
+        for (let i = 0; i < 15; i++) {
+                for (let j = 0; j < 15; j++) {
+                        if (chess[i][j] === 0) {
+                                for (let k = 0; k < count; k++) {       
+                                        if (wins[i][j][k]) {
+                                                if(myMins[k] === 1){
+                                                        myScore[i][j] += 200;
+                                                }else if(myMins[k] === 2){
+                                                        myScore[i][j] += 400;
+                                                }else if (myMins[k] === 3){
+                                                        myScore[i][j] += 1000;
+                                                }else if(myMins[k] === 4){
+                                                        myScore[i][j] += 10000;
+                                                }
+                                                if(computer[k] === 1){
+                                                        computerScore[i][j] += 220;
+                                                }else if(computer[k] === 2){
+                                                        computerScore[i][j] += 420;
+                                                }else if (computer[k] === 3){
+                                                        computerScore[i][j] += 5000;
+                                                }else if(computer[k] === 4){
+                                                        computerScore[i][j] += 20000;
+                                                }
+                                        }
+                                }
+                                if (myScore[i][j] > max) {
+                                        max = myScore[i][j]
+                                        u = i
+                                        v = j
+                                }
+                                if (computerScore[i][j] > max) {
+                                        max = computerScore[i][j]
+                                        u = i
+                                        v = j
+                                }
+                        }
+                }
+        }
+        drawChessPieces(u, v, isme)
+        chess[u][v] = 2                         // 电脑 落子设置为 2
+        for (let k = 0; k < count; k++) {
+                if (wins[u][v][k]) {
+                        myMins[k] = 6
+                        computer[k]++
+                        if (computer[k] === 5) {
+                                alert('COMPUTER WIN')
+                                return
+                        }
+                }
+        }
         
-        drawChessPieces(i, j, isme)
 }
