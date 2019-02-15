@@ -1,0 +1,39 @@
+* {
+        margin: 0;
+        padding: 0;
+}
+
+body {
+        text-align: center
+}
+
+.wrap {
+        position: relative;
+        margin: 100px auto;
+        width: 500px;
+        height: 300px;
+        border: 1px solid #f00
+}
+/* 背景样式 */
+.back {
+        position: absolute;
+        background: #000;
+        width: 10px;
+        height: 10px;
+}
+
+/* 蛇的样式 */
+.snake {
+        position: absolute;
+        background: #0f0;
+        width: 10px;
+        height: 10px;
+}
+
+/* 点的样式 */
+.dot {
+        position: absolute;
+        background: #f00;
+        width: 10px;
+        height: 10px;
+}
