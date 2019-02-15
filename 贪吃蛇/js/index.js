@@ -36,7 +36,12 @@ const backData = [
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ]
 const backDom = document.getElementById('wrap')
-let backDoms = []
+let backDoms = []       // 用于存储游戏版面的所有的div dom对象
+// 蛇数据的数组
+let snake = []
+
+let timer = null
+let dir = ''            // 蛇移动的方向 
 /**
  * 初始化 游戏背景
  */
@@ -72,6 +77,10 @@ function RamdomDot() {
 function initSnake () {
         let row = Math.floor(backData.length/2)
         let col = Math.floor(backData[0].length/2)
+        snake.unshift({
+                row,
+                col
+        })
         backData[row][col] = 1
 }
 
@@ -80,7 +89,6 @@ function initSnake () {
  */
 function createFood () {
         let dot = RamdomDot()
-        console.log(dot)
         if (backData[dot.row][dot.col] !== 0) {
                 createFood()
         }
@@ -110,6 +118,87 @@ function resetDom() {
         }
 }
 
+/**
+ * 对应蛇的数据赋值给游戏版面
+ */
+function snakeToBack() {
+        for (i = 0; i < backData.length; i++) {
+                for (let j = 0; j < backData[i].length; j++) {
+                      if (backData[i][j] === 1) {
+                              backData[i][j] = 0
+                      }
+                }
+        }
+        for (let i = 0; i < snake.length; i++) {
+                backData[snake[i].row][snake[i].col] = 1 
+        }
+        resetDom()
+}
+
+/**
+ * 蛇移动
+ * @param {Number} row 纵向移动的方向（-1 上  1下 ）
+ * @param {Number} col 横向移动的方向（-1 左 1 右）
+ */
+function snakeMove(row, col) {
+        let head = snake[0]
+        let next = {
+                row: head.row + row,
+                col: head.col + col
+        } 
+        if (next.row === -1 || next.row === 31 || next.col === -1 || next.col === 51) {
+                alert('GAME OVER')
+                timer = null
+                return
+        }
+        snake.unshift(next)
+        if (backData[next.row][next.col] === 0) {
+                snake.pop()
+        } else {
+                createFood()
+        }
+        snakeToBack()
+}
+
+function controllMove(key) {
+        if (key === 38 && dir === 40) return
+        if (key === 39 && dir === 37) return
+        dir = key
+        clearInterval(timer)
+        switch(key) {
+                case 38:        //up
+                        timer = setInterval(() => {
+                                snakeMove(-1, 0)
+                        }, 100)                
+                        break
+                case 40:        //down
+                        timer = setInterval(() => {
+                                snakeMove(1, 0)   
+                        }, 100)  
+                        break
+                case 37:        //left
+                        timer = setInterval(() => {
+                                snakeMove(0, -1)   
+                        }, 100)  
+                        break
+                case 39:        //right
+                        clearInterval(timer)
+                        timer = setInterval(() => {
+                                snakeMove(0, 1)   
+                        }, 100)  
+                        break
+                default:
+                        break
+        }
+}
+
+/**
+ * 键盘事件
+ */
+document.onkeyup = function(e) {
+        let key = e.keyCode
+        controllMove(key)
+}
 
 initBack()
 initSnake()
