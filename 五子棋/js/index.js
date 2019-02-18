@@ -206,3 +206,27 @@ computerAI = function () {
         }
         
 }
+
+
+
+var removeDuplicates = function(nums) {
+        let index = 0, len = nums.length, count = 1
+        while(index < len) {
+            if (nums[index] === nums[index + 1]) {
+                console.log(nums[index] ,count)
+                if (count === 2) {
+                        nums.splice(index,1)
+                        len--
+                } else {
+                        count++
+                        index++
+                }
+            } else {
+                count = 1
+                index++
+            }
+        }
+        return len
+    }
+
+    console.log(removeDuplicates([1,1,1,2,2,3]))

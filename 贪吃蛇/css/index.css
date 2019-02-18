@@ -7,9 +7,13 @@ body {
         text-align: center
 }
 
+.none {
+        display: none
+}
+
 .wrap {
         position: relative;
-        margin: 100px auto;
+        margin: auto;
         width: 500px;
         height: 300px;
         border: 1px solid #f00
@@ -36,4 +40,34 @@ body {
         background: #f00;
         width: 10px;
         height: 10px;
+}
+
+/* 得分样式 */
+.score_wrap {
+        margin: 100px auto 0 auto;
+        width: 500px;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: right
+}
+
+.score{
+        font-size: 22px;
+        color: #449eff
+}
+
+/*  */
+.over {
+        position: absolute;
+        text-align: center;
+        line-height: 300px;
+        font-size: 24px;
+        font-weight: 500;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        color: #eee;
+        background: rgba(0, 0, 0, .4)
 }

@@ -36,12 +36,18 @@ const backData = [
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
 ]
 const backDom = document.getElementById('wrap')
+const scoreDom = document.getElementById('score')
+const Over = document.getElementById('over')
 let backDoms = []       // 用于存储游戏版面的所有的div dom对象
 // 蛇数据的数组
 let snake = []
 
-let timer = null
+let timer = null, setTime = null
 let dir = ''            // 蛇移动的方向 
+let score = 0           // 得分
+let time = '00:00'      // 用时
+
+
 /**
  * 初始化 游戏背景
  */
@@ -147,7 +153,7 @@ function snakeMove(row, col) {
                 col: head.col + col
         } 
         if (next.row === -1 || next.row === 31 || next.col === -1 || next.col === 51) {
-                alert('GAME OVER')
+                Over.className = 'over'
                 timer = null
                 return
         }
@@ -155,11 +161,17 @@ function snakeMove(row, col) {
         if (backData[next.row][next.col] === 0) {
                 snake.pop()
         } else {
+                score++
+                scoreDom.innerText = score
                 createFood()
         }
         snakeToBack()
 }
 
+/**
+ * 控制蛇移动以及解决键位的冲突
+ * @param {Number} key 按键的键位 
+ */
 function controllMove(key) {
         if (key === 38 && dir === 40) return
         if (key === 39 && dir === 37) return
