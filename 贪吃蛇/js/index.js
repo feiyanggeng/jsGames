@@ -3,6 +3,7 @@
  * time 2019-01-30
  * theme Gluttonous sanke
  */
+// 1 表示 蛇  2 表示 蛋 0 表示 啥也没有
 const backData = [
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -46,6 +47,7 @@ let timer = null, setTime = null
 let dir = ''            // 蛇移动的方向 
 let score = 0           // 得分
 let time = '00:00'      // 用时
+let isOver = false
 
 
 /**
@@ -68,8 +70,8 @@ function initBack() {
  * 随机产生一个点
  */
 function RamdomDot() {
-        let row = Math.round(Math.random()*30)
-        let col = Math.round(Math.random()*50)
+        let row = Math.round(Math.random()*29)
+        let col = Math.round(Math.random()*49)
 
         return {
                 row,
@@ -152,7 +154,8 @@ function snakeMove(row, col) {
                 row: head.row + row,
                 col: head.col + col
         } 
-        if (next.row === -1 || next.row === 31 || next.col === -1 || next.col === 51) {
+        isOver = next.row === -1 || next.row === 30 || next.col === -1 || next.col === 50 || backData[next.row][next.col] === 1
+        if (isOver) {
                 Over.className = 'over'
                 timer = null
                 return
@@ -202,12 +205,14 @@ function controllMove(key) {
                 default:
                         break
         }
+        return
 }
 
 /**
  * 键盘事件
  */
 document.onkeyup = function(e) {
+        if (isOver) return
         let key = e.keyCode
         controllMove(key)
 }
